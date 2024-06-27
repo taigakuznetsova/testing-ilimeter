@@ -12,7 +12,7 @@ NAFI Project
 - virtualenv
 - pytest-selenium
 - chromedriver 126.0.6478.127 (путь к драйверу pytest -v --driver Chrome --driver-path /path/to//chromedriver.exe)
-- 
+  
 
 Установка
 
@@ -86,7 +86,8 @@ python manage.py runserver
 Шаг 7: Запуск автоматизированных тестов
 Запустите драйвер:
 pytest -v --driver Chrome --driver-path /path/to//chromedriver.exe
-Запустите автотесты auth_tests.py auth_tests_nagative.py
+
+Запустите автотесты auth_tests.py auth_tests_negative.py
 
 
 
