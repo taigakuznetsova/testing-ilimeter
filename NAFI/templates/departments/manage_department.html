@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Manage Department:<a href="{% url 'department_detail' department.id %}"> {{ department.name }}</a></h1>
+
+<h2>Members</h2>
+<ul>
+    {% for member in department.members.all %}
+    <li>
+        {{ member.username }}
+        <form method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="member_id" value="{{ member.id }}">
+            <button type="submit" name="remove_member">Remove</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    {{ add_member_form.as_p }}
+    <button type="submit" name="add_members">Add Members</button>
+</form>
+
+<h2>Courses</h2>
+<ul>
+    {% for course in department.courses.all %}
+    <li>
+        {{ course.title }}
+        <form method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="course_id" value="{{ course.id }}">
+            <button type="submit" name="remove_course">Remove</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    {{ add_course_form.as_p }}
+    <button type="submit" name="add_courses">Add Courses</button>
+</form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ interactive.title }}</h2>
+<p>Type: {{ interactive.get_type_display }}</p>
+<p>Description: {{ interactive.description }}</p>
+<p>Active: {{ interactive.is_active }}</p>
+<p>Repeatable: {{ interactive.is_repeatable }}</p>
+<p>Created at: {{ interactive.created_at }}</p>
+<p>Updated at: {{ interactive.updated_at }}</p>
+
+<a href="{% url 'interactive_update' interactive.pk %}">Edit</a>
+{% endblock %}

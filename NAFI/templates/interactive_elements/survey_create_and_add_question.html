@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать опрос и добавить вопросы{% endblock %}
+
+{% block content %}
+<h1>Создать опрос и добавить вопросы</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Опрос</legend>
+        {{ form.as_p }}
+        <button type="submit" name="create_survey">Создать опрос</button>
+    </fieldset>
+</form>
+
+<hr>
+<h2>Добавленные вопросы</h2>
+{% if questions %}
+<ul id="question-list">
+    {% for question in questions %}
+    <li>{{ question }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Пока не добавлено ни одного вопроса.</p>
+{% endif %}
+
+{% if question_form %}
+<form method="post" id="add-question-form">
+    {% csrf_token %}
+    {{ question_form.as_p }}
+    <button type="submit" name="add_question" id="add-question-btn">Добавить вопрос</button>
+</form>
+{% endif %}
+{% endblock %}

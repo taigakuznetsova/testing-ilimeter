@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать вопрос с одиночным выбором{% endblock %}
+
+{% block content %}
+<h1>Создать вопрос с одиночным выбором</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div>
+        <label for="id_option">Новый вариант ответа</label>
+        <input type="text" id="id_option" name="option">
+        <button id="add-option-btn" type="button">Добавить</button>
+    </div>
+    <div id="options-container">
+    </div>
+    <button type="submit">Сохранить</button>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addOptionBtn = document.getElementById('add-option-btn');
+        const optionsContainer = document.getElementById('options-container');
+        const optionInput = document.getElementById('id_option');
+
+        addOptionBtn.addEventListener('click', function(event) {
+            const optionText = optionInput.value.trim();
+            if (optionText) {
+                const optionItem = document.createElement('div');
+                optionItem.className = 'option-item';
+                optionItem.innerHTML = `
+                    <input type="hidden" name="options" value="${optionText}">
+                    <span>${optionText}</span>
+                    <button type="button" class="remove-option-btn">Удалить</button>
+                `;
+                optionsContainer.appendChild(optionItem);
+                optionInput.value = '';
+
+                optionItem.querySelector('.remove-option-btn').addEventListener('click', function() {
+                    optionsContainer.removeChild(optionItem);
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

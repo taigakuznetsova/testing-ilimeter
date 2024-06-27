@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
+{% endblock %}
+
+{% block content %}
+    <h1>Meeting Calendar</h1>
+    <h2>Host meets</h2>
+    {% if meetings_host %}
+        <ul>
+        {% for meeting in meetings_host %}
+            <li><a href="{% url 'meeting_detail' meeting.id %}">{{ meeting.title }}: {{ meeting.start_time }} - {{ meeting.end_time }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No host meeting</p>
+    {% endif %}
+
+    <h2>Participant meets</h2>
+    {% if meetings_participant %}
+        <ul>
+        {% for meeting in meetings_participant %}
+            <li><a href="{% url 'meeting_detail' meeting.id %}">{{ meeting.title }}: {{ meeting.start_time }} - {{ meeting.end_time }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Participant meeting</p>
+    {% endif %}
+
+    <div id='calendar'></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            eventDisplay: 'block',
+            eventBackgroundColor: '#6e7fa7',
+            eventBorderColor: '#6e7fa7',
+            eventTextColor: '#fff',
+            eventClick: function(info) {
+                window.location.href = info.event.url;
+            },
+            events: [
+                {% for meeting in meetings_host %}
+                    {
+                        title: '{{ meeting.title }}',
+                        start: '{{ meeting.start_time|date:"Y-m-d\\TH:i:s" }}',
+                        {% if meeting.end_time %}
+                        end: '{{ meeting.end_time|date:"Y-m-d\\TH:i:s" }}',
+                        {% endif %}
+                        url: '{% url 'meeting_detail' meeting.id %}'
+                    },
+                {% endfor %}
+                {% for meeting in meetings_participant %}
+                    {
+                        title: '{{ meeting.title }}',
+                        start: '{{ meeting.start_time|date:"Y-m-d\\TH:i:s" }}',
+                        {% if meeting.end_time %}
+                        end: '{{ meeting.end_time|date:"Y-m-d\\TH:i:s" }}',
+                        {% endif %}
+                        url: '{% url 'meeting_detail' meeting.id %}'
+                    },
+                {% endfor %}
+            ]
+        });
+        calendar.render();
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="statistics-container">
+    <h1>Статистические данные</h1>
+    
+    <!-- Форма выбора периода времени -->
+    <form method="get" action="{% url 'statistics' %}" class="period-form">
+        <label for="period">Выберите период:</label>
+        <select name="period" id="period" class="period-select">
+            <option value="day" {% if period == 'day' %}selected{% endif %}>День</option>
+            <option value="week" {% if period == 'week' %}selected{% endif %}>Неделя</option>
+            <option value="month" {% if period == 'month' %}selected{% endif %}>Месяц</option>
+            <option value="year" {% if period == 'year' %}selected{% endif %}>Год</option>
+            <option value="custom" {% if period == 'custom' %}selected{% endif %}>Пользовательский</option>
+        </select>
+        
+        <div id="custom-date-range" class="custom-date-range" style="display: {% if period == 'custom' %}block{% else %}none{% endif %};">
+            <label for="start_date">Начальная дата:</label>
+            <input type="date" name="start_date" value="{{ start_date|date:'Y-m-d' }}" class="date-input">
+            <label for="end_date">Конечная дата:</label>
+            <input type="date" name="end_date" value="{{ end_date|date:'Y-m-d' }}" class="date-input">
+        </div>
+        
+        <button type="submit" class="apply-button">Применить</button>
+    </form>
+    
+    <!-- Статистика -->
+    <div class="statistics-section">
+        <div class="stat-card">
+            <h2>Продуктивность по отделам</h2>
+            <canvas id="productivityChart"></canvas>
+        </div>
+        <div class="stat-card">
+            <h2>Общее количество завершенных уроков</h2>
+            <p>{{ total_completed_lessons }}</p>
+        </div>
+        <div class="stat-card">
+            <h2>Статус обучения</h2>
+            <p>Обучающиеся: {{ total_learners }}</p>
+            <p>Необучающиеся: {{ total_non_learners }}</p>
+        </div>
+        <div class="stat-card">
+            <h2>Отделы</h2>
+            <ul>
+                {% for stat in departments %}
+                    <li>
+                        <h3>{{ stat.department.name }}</h3>
+                        <span><a href="{% url 'department_detail' stat.department.id %}">Перейти к отделу</a></span>
+                        <p>Всего сотрудников: {{ stat.total_members }}</p>
+                        <p>Обучающиеся: {{ stat.learners }}</p>
+                        <p>Необучающиеся: {{ stat.non_learners }}</p>
+                        <p>Завершенные уроки: {{ stat.total_completed_lessons }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('productivityChart').getContext('2d');
+    var productivityChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for stat in departments %}'{{ stat.department.name }}',{% endfor %}],
+            datasets: [{
+                label: 'Завершенные уроки',
+                data: [{% for stat in departments %}{{ stat.department_completed_lessons }},{% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    document.getElementById('period').addEventListener('change', function() {
+        var customDateRange = document.getElementById('custom-date-range');
+        if (this.value === 'custom') {
+            customDateRange.style.display = 'block';
+        } else {
+            customDateRange.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

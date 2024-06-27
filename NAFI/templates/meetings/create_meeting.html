@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Create Meeting</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Meeting</button>
+    </form>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+    <script>
+        $(function() {
+            var dateFormat = "yy-mm-dd",
+                from = $("#id_start_time")
+                    .datetimepicker({
+                        minDate: 0,
+                        dateFormat: dateFormat
+                    }),
+                to = $("#id_end_time").datetimepicker({
+                    minDate: 0,
+                    dateFormat: dateFormat
+                });
+        });
+    </script>
+{% endblock %}

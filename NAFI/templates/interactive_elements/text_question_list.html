@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Text Questions for {{ interactive.title }}</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Max Length</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for text_question in text_questions %}
+        <tr>
+            <td>{{ text_question.question_text }}</td>
+            <td>{{ text_question.max_length }}</td>
+            <td>
+                <a href="{% url 'text_question_detail' text_question.pk %}">View</a>
+                <a href="{% url 'text_question_update' text_question.pk %}">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'text_question_create' interactive.pk %}">Create new Text Question</a>
+<a href="{% url 'interactive_detail' interactive.pk %}">Back to Interactive</a>
+{% endblock %}

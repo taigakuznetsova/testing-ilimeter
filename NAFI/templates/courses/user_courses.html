@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load course_extras %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h2 class="mb-4">Мои курсы</h2>
+        </div>
+    </div>
+    <div class="row">
+        {% for user_course in user_courses %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'course_detail' user_course.course.id %}">{{ user_course.course.title }}</a>
+                        </h5>
+                        <p class="card-text">Записан: {{ user_course.enrolled_at }}</p>
+                        <p class="card-text">Завершен: {{ user_course.completed_at|default:"Ещё не завершен" }}</p>
+                        <h6>Прогресс</h6>
+                        <ul class="list-group list-group-flush">
+                            {% for module in user_course.course.modules.all %}
+                                <li class="list-group-item">
+                                    {{ module.title }}
+                                    <ul class="list-group list-group-flush">
+                                        {% if module.lessons.all %}
+                                            {% for lesson in module.lessons.all %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a>
+                                                    {% if lesson|check_lesson_progress:request.user %}
+                                                        <span class="badge badge-success">Завершено</span>
+                                                    {% else %}
+                                                        <span class="badge badge-secondary">Не завершено</span>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li class="list-group-item text-muted">Уроков в этом модуле нет.</li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

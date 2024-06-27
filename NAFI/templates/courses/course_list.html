@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h2 class="mb-4">Курсы</h2>
+        </div>
+    </div>
+    <div class="row">
+        {% for course in courses %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'course_detail' course.id %}">{{ course.title }}</a></h5>
+                        <p class="card-text">{{ course.description }}</p>
+                        <p class="card-text"><small class="text-muted">{{ course.is_free|yesno:"Бесплатно,Платно" }}</small></p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <a href="{% url 'user_courses' %}" class="btn btn-primary mt-3">Мои курсы</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

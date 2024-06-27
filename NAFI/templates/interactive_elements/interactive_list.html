@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Выбор Интерактива{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Выберите тип интерактива</h1>
+    <div class="row" id="interactive-tiles">
+        <div class="col-md-4 mb-3">
+            <div class="card interactive-tile" data-interactive-type="text-question">
+                <div class="card-body">
+                    <h5 class="card-title">Открытый вопрос (текст)</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card interactive-tile" data-interactive-type="number-question">
+                <div class="card-body">
+                    <h5 class="card-title">Открытый вопрос (число)</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card interactive-tile" data-interactive-type="star-voting">
+                <div class="card-body">
+                    <h5 class="card-title">Экспресс-голосование («звёздочки»)</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card interactive-tile" data-interactive-type="single-choice">
+                <div class="card-body">
+                    <h5 class="card-title">Экспресс-голосование (Single-choice)</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card interactive-tile" data-interactive-type="multiple-choice">
+                <div class="card-body">
+                    <h5 class="card-title">Экспресс-голосование (Multiple choice)</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card interactive-tile" data-interactive-type="survey">
+                <div class="card-body">
+                    <h5 class="card-title">Опрос по небольшой анкете</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card interactive-tile" data-interactive-type="quiz">
+                <div class="card-body">
+                    <h5 class="card-title">Викторина</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="interactive-description" class="mt-4" style="display: none;">
+        <h2 id="description-title"></h2>
+        <p id="description-text"></p>
+        <a id="create-link" class="btn btn-primary" href="#">Создать</a>
+    </div>
+</div>
+
+<style>
+    .interactive-tile {
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .interactive-tile:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const interactiveDescriptions = {
+            'text-question': {
+                title: 'Открытый вопрос (текст)',
+                text: 'На свой вопрос вы получите текстовый ответ от участников.',
+                link: 'text-question/create/'
+            },
+            'number-question': {
+                title: 'Открытый вопрос (число)',
+                text: 'На свой вопрос вы получите числовой ответ от участников.',
+                link: 'number-question/create/'
+            },
+            'star-voting': {
+                title: 'Экспресс-голосование («звёздочки»)',
+                text: 'Участиники смогут оценить ваш вопрос/предложение "звездочками"',
+                link: 'star-voting-question/create/'
+            },
+            'single-choice': {
+                title: 'Экспресс-голосование (Single-choice)',
+                text: 'Позволяет выбрать участникам один из предложенных вами вариантов ответа.',
+                link: 'single-choice-question/create/'
+            },
+            'multiple-choice': {
+                title: 'Экспресс-голосование (Multiple choice)',
+                text: 'Позволяет выбрать участникам несколько вариантов ответа из предложенных вами.',
+                link: 'multiple-choice-question/create/'
+            },
+            'survey': {
+                title: 'Опрос по небольшой анкете',
+                text: 'Позволяет задать серию вопросов и получить ответы от участников.',
+                link: 'survey-question/create/'
+            },
+            'quiz': {
+                title: 'Викторина',
+                text: 'Выберите одну из доступных викторин: «5 фактов», «Тематические квизы», «Игра в ассоциации: три варианта», «История с неожиданным концом».',
+                link: 'quiz/create/'
+            },
+        };
+
+        const tiles = document.querySelectorAll('.interactive-tile');
+        const descriptionDiv = document.getElementById('interactive-description');
+        const descriptionTitle = document.getElementById('description-title');
+        const descriptionText = document.getElementById('description-text');
+        const createLink = document.getElementById('create-link');
+
+        tiles.forEach(tile => {
+            tile.addEventListener('click', function() {
+                const type = this.dataset.interactiveType;
+                const description = interactiveDescriptions[type];
+                descriptionTitle.textContent = description.title;
+                descriptionText.textContent = description.text;
+                createLink.href = description.link;
+                descriptionDiv.style.display = 'block';
+            });
+        });
+    });
+</script>
+{% endblock %}

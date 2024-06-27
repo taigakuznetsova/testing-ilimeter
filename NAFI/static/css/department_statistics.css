@@ -1,0 +1,56 @@
+.statistics-container {
+    padding: 20px;
+}
+
+.period-form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.period-select, .date-input, .apply-button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.apply-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.apply-button:hover {
+    background-color: #0056b3;
+}
+
+.statistics-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-card {
+    flex: 1 1 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.stat-card h2 {
+    margin-top: 0;
+}
+
+.stat-card p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.custom-date-range {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

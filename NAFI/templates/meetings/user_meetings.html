@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Мои встречи</h2>
+
+<p>Сортировать по:
+    <a href="?sort_by=title&order={% if sort_by == 'title' and order == 'asc' %}desc{% else %}asc{% endif %}">Название</a> |
+    <a href="?sort_by=start_time&order={% if sort_by == 'start_time' and order == 'asc' %}desc{% else %}asc{% endif %}">Дата начала</a> |
+    <a href="?sort_by=end_time&order={% if sort_by == 'end_time' and order == 'asc' %}desc{% else %}asc{% endif %}">Дата окончания</a>
+</p>
+
+<ul>
+    {% for meeting in meetings %}
+        <li><a href="{% url 'meeting_detail' meeting_id=meeting.id %}">{{ meeting.title }}</a> - {{ meeting.start_time }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'create_meeting' %}">Создать новую встречу</a>
+<a href="{% url 'interactive_list' %}">Добавить Интерактив</a>
+{% endblock %}

@@ -1,0 +1,111 @@
+.department-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.department-header h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.department-statistics, .department-productivity, .department-courses, .department-members, .lesson-completions, .select-period {
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.stat-box h2 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.stat-number {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.stat-detail {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.stat-trend {
+    margin-top: 10px;
+    font-size: 0.8em;
+    color: #00aaff;
+}
+
+.course-item {
+    margin-bottom: 10px;
+}
+
+.course-title {
+    font-weight: bold;
+}
+
+.course-progress {
+    width: 100%;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    margin: 5px 0;
+    height: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.course-progress-bar {
+    height: 100%;
+    background-color: #00aaff;
+    transition: width 0.5s;
+}
+
+.course-percent {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.member-name {
+    font-weight: bold;
+}
+
+.member-role {
+    margin-left: auto;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.lesson-completions h2, .select-period h2 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.select-period form {
+    display: flex;
+    flex-direction: column;
+}
+
+.select-period label {
+    margin-top: 5px;
+}
+
+.select-period input, .select-period select, .select-period button {
+    margin-top: 5px;
+}

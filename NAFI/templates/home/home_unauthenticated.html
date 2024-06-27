@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Илиметр - Личный кабинет</title>
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="Илиметр">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Тарифы</a></li>
+                <li><a href="#">Скачать Илиметр</a></li>
+                <li><a href="#">Для бизнеса</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="{% url 'users:login' %}" class="button login">Войти</a>
+            <a href="#" class="button language">RU</a>
+        </div>        
+    </header>
+
+    <main>
+        <section class="intro">
+            <h1><a href="{% url 'users:login' %}">Войдите</a>, для доступа к личному кабинету</h1>
+            <p>Единая экосистема, которая заменит привычные сервисы</p>
+        </section>
+
+        <section class="actions">
+            <div class="action-card">
+                <h2>Запланировать видеовстречу</h2>
+                <p>Запланируйте видеоконференцию заранее, чтобы все сотрудники могли добавить себе упоминание в календарь.</p>
+            </div>
+            <div class="action-card">
+                <a href="{% url 'create_meeting' %}" class="new-meeting">Создать видеовстречу</a>
+                <p>до 100 участников</p>
+            </div>
+            <div class="action-card interactive">
+                <h2>Интерактивное мероприятие</h2>
+                <p>Создавайте и проводите опросы аудитории, викторины, голосования.</p>
+            </div>
+            <div class="action-card quick-connect">
+                <h2>Быстрое подключение</h2>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>

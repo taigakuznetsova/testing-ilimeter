@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'manage_department' department.id %}">Manage</a>
+<div class="department-container">
+    <div class="department-header">
+        <h1>Отдел {{ department.name }}</h1>
+        <p>Руководитель: {{ department.head.username }}</p>
+    </div>
+
+    <div class="department-statistics">
+        <div class="stat-box">
+            <h2>Количество сотрудников в отделе</h2>
+            <div class="stat-number">{{ total_members }}</div>
+            <div class="stat-detail">
+                <span>{{ total_men }} Мужчин</span>
+                <span>{{ total_women }} Женщин</span>
+            </div>
+            <div class="stat-trend">+2% Прошлый месяц</div>
+        </div>
+        <div class="stat-box">
+            <h2>Количество обучающихся в отделе</h2>
+            <div class="stat-number">{{ total_learners }}</div>
+            <div class="stat-detail">
+                <span>{{ total_men }} Мужчин</span>
+                <span>{{ total_women }} Женщин</span>
+            </div>
+            <div class="stat-trend">+2% Прошлый месяц</div>
+        </div>
+    </div>
+
+    <div class="department-productivity">
+        <h2>Продуктивность всего отдела</h2>
+        <canvas id="productivityChart"></canvas>
+    </div>
+
+    <div class="department-courses">
+        <h2>Курсы отдела</h2>
+        <ul>
+            {% for stat in course_stats %}
+            <li class="course-item">
+                <span class="course-title">{{ stat.course.title }}</span>
+                <div class="course-progress">
+                    <div class="course-progress-bar" style="width: {{ stat.completed_percent }}%;"></div>
+                </div>
+                <span class="course-percent">{{ stat.completed_percent }}%</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="department-members">
+        <h2>Сотрудники</h2>
+        <ul>
+            {% for member in members %}
+            <li class="member-item">
+                <img src="{{ member.profile_image_url }}" alt="{{ member.username }}" class="member-avatar">
+                <span class="member-name">{{ member.username }}</span>
+                <span class="member-role">UI UX</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="lesson-completions">
+        <h2>Количество завершенных уроков</h2>
+        <p>Всего завершенных уроков за выбранный период ({{ period }}): {{ lesson_completions }}</p>
+    </div>
+
+    <div class="select-period">
+        <h2>Выбрать период</h2>
+        <form method="get" action="{% url 'department_detail' department.id %}">
+            <label for="period">Период:</label>
+            <select name="period" id="period">
+                <option value="day" {% if period == 'day' %}selected{% endif %}>День</option>
+                <option value="month" {% if period == 'month' %}selected{% endif %}>Месяц</option>
+                <option value="year" {% if period == 'year' %}selected{% endif %}>Год</option>
+                <option value="custom" {% if period == 'custom' %}selected{% endif %}>Выбрать даты</option>
+            </select>
+            <div id="custom-period" style="display: {% if period == 'custom' %}block{% else %}none{% endif %};">
+                <label for="start_date">Дата начала:</label>
+                <input type="date" name="start_date" id="start_date" value="{{ request.GET.start_date }}">
+                <label for="end_date">Дата окончания:</label>
+                <input type="date" name="end_date" id="end_date" value="{{ request.GET.end_date }}">
+            </div>
+            <button type="submit">Применить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('period').addEventListener('change', function() {
+        var customPeriod = document.getElementById('custom-period');
+        if (this.value === 'custom') {
+            customPeriod.style.display = 'block';
+        } else {
+            customPeriod.style.display = 'none';
+        }
+    });
+
+    // Add your JavaScript code for rendering the productivity chart using Chart.js
+</script>
+{% endblock %}

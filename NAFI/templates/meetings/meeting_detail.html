@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ meeting.title }}</h2>
+<p>{{ meeting.description }}</p>
+<p><a href="{{ meeting.url }}">Ссылка на встречу</a></p>
+<p>Начало: {{ meeting.start_time }}</p>
+<p>Окончание: {{ meeting.end_time }}</p>
+<iframe src="{{ meeting.url }}" width="100%" height="700px" allow="camera; microphone; fullscreen"></iframe>
+<a href="{% url 'user_meetings' %}">Back to meetings</a>
+{% if meeting.host == request.user %}
+    <a href="{% url 'edit_meeting' meeting_id=meeting.id %}">Изменить</a>
+    <a href="{% url 'interactive_list' %}">Добавить Интерактив</a>
+{% endif %}
+{% endblock %}

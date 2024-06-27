@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load course_extras %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Main Content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h2>{{ course.title }}</h2>
+                <a href="{% url 'user_courses' %}" class="btn btn-primary">Назад к курсам</a>
+            </div>
+
+            <p>{{ course.description }}</p>
+
+            {% if user.is_authenticated %}
+                {% if user_course %}
+                    <p>Вы уже записаны на этот курс.</p>
+                {% else %}
+                    <a href="{% url 'enroll_course' course.id %}" class="btn btn-primary">Записаться на курс</a>
+                {% endif %}
+            {% else %}
+                <p><a href="{% url 'users:login' %}">Войдите</a>, чтобы записаться на курс.</p>
+            {% endif %}
+
+            <h3>Модули</h3>
+            <div class="module-list">
+                {% for module in course.modules.all %}
+                    <div class="module-item card mb-3">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ module.title }}</h4>
+                            <p class="card-text">{{ module.description }}</p>
+                            <ul class="list-group list-group-flush">
+                                {% for lesson in module.lessons.all %}
+                                    <li class="list-group-item">
+                                        <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a>
+                                        {% if user.is_authenticated %}
+                                            {% if lesson|check_lesson_progress:user %}
+                                                <span class="badge badge-success">Завершено</span>
+                                                    {% else %}
+                                                        <span class="badge badge-secondary">Не завершено</span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </main>
+        
+                <!-- Sidebar (right) -->
+                <aside class="col-md-2 d-none d-md-block bg-light sidebar-right">
+                    <div class="sidebar-sticky">
+                        <h5>Заметки</h5>
+                        <ul class="nav flex-column">
+                            <!-- Add note items here -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="file-text"></span>
+                                    Заметка 1
+                                </a>
+                            </li>
+                            <!-- Add more notes as needed -->
+                        </ul>
+                        <h5>Ежедневная цель</h5>
+                        <div class="daily-goal">
+                            <p>Средний результат теста: 89/100</p>
+                            <p>Проведенных часов за обучением: 9 ч.</p>
+                        </div>
+                        <h5>В процессе</h5>
+                        <div class="progress-list">
+                            <!-- Add progress items here -->
+                            <div class="progress-item">
+                                <p>Искусство речи</p>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 62%;" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100">62%</div>
+                                </div>
+                            </div>
+                            <!-- Add more progress items as needed -->
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+        {% endblock %}
+        
+        <!-- Add the necessary Bootstrap and Feather icons scripts -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/feather-icons"></script>
+        <script>
+            feather.replace();
+        </script>
+        

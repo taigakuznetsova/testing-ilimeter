@@ -1,0 +1,147 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Илиметр{% endblock %}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Your custom CSS -->
+    <link href="{% static 'css/authenticated_styles.css' %}" rel="stylesheet">
+    <link href="{% static 'css/department_detail.css' %}" rel="stylesheet">
+    <link href="{% static 'css/department_statistics.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    {% block extrahead %}
+    <!-- Any extra <head> block items -->
+    {% endblock %}
+</head>
+<body>
+    <!-- Left Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="{% url 'home' %}"><img class="sidebar-header img" src="{% static 'img/logo.png' %}" alt="Logo"></a>
+            <h3><a href="{% url 'home' %}">Илиметр</a></h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li>
+                <a href="{% url 'users:profile' %}">Личный кабинет</a>
+            </li>
+            <li>
+                <a href="{% url 'user_meetings' %}">Конференции</a>
+            </li>
+            <li>
+                <a href="{% url 'calendar' %}">Календарь</a>
+            </li>
+            <li>
+                <a href="#">Обучение</a>
+            </li>
+            <li>
+                <a href="{% url 'statistics' %}">Статистика</a>
+            </li>
+            <li>
+                <a href="#">Документы</a>
+            </li>
+            <li>
+                <a href="#">Настройки</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li>
+                    <form method="post" action="{% url 'users:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link" style="padding: 0; border: none; background: none; color: white;">Выход</button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'users:login' %}">Вход</a></li>
+                <li><a href="{% url 'users:register' %}">Регистрация</a></li>
+            {% endif %}
+        </ul>
+        <button class="btn btn-primary collapse-button" id="sidebarCollapse"><</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">Илиметр</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Обсуждения</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'course_list' %}">Курсы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Блог</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Рабочее пространство</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Письма</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'user_notifications' %}">Уведомления</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'users:profile' %}">{{user.username}}</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">Вход</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'users:register' %}">Регистрация</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Messages -->
+        <div class="container mt-3">
+            {% if messages %}
+                <div class="alert alert-info" role="alert">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Content -->
+        <main>
+            {% block content %}
+            <!-- Page content -->
+            {% endblock %}
+        </main>
+    </div>
+
+    <footer>
+        {% comment %} <p>&copy; 2024 ILIMETR by TEAM №9</p> {% endcomment %}
+    </footer>
+
+    <!-- jQuery, Popper.js, Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('sidebarCollapse').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('sidebar-collapsed');
+            document.getElementById('main-content').classList.toggle('main-content-collapsed');
+            document.querySelector('.navbar').classList.toggle('main-content-collapsed'); /* добавим класс для навбара */
+        });
+    </script>
+
+    {% block extra_js %}
+    <!-- Add any extra JavaScript here -->
+    {% endblock %}
+</body>
+</html>
